@@ -1,0 +1,19 @@
+<h2>Gas Data</h2>
+<div class="table-responsive">
+  <table class="table table-striped table-sm">
+    <thead>
+      <tr>
+        <th>Name of The Gas</th>
+        <th>Concentration</th>
+        <th>Go to Map</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let gas of gases">
+        <td>{{ gas.gasType }}</td>
+        <td>{{ gas.concentration }}</td>
+        <td><button class="btn btn-primary" (click)="goToMap(gas)">Map location</button></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
