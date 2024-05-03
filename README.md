@@ -10,11 +10,11 @@ Node_backend the backend side can be installed the same way just npm install the
 
 ## Project by
 Mohamed Nidhal Sadfi
+Khalil Hechmi
 Ahmed Ibrahim Fattoumi
 Youssef Meganem
 Aziz Ouerfeli
 Iheb ben marzouk
-Khalil Hechmi
 ## UML diagrams
 More about that later when everything becomes more clear
 
