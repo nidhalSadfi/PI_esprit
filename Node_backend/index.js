@@ -25,7 +25,6 @@ const gasSchema = new mongoose.Schema({
 
 const Gas = mongoose.model('Gas', gasSchema);
 
-// Route to fetch gas data
 app.get('/api/gas-data', async (req, res) => {
   try {
     const data = await Gas.find();
@@ -47,7 +46,6 @@ app.post('/api/forgot-password', async (req, res) => {
         return res.status(404).json({ message: 'User not found with this email' });
       }
   
-      // Update user's password
       const hashedPassword = await bcrypt.hash(newPassword, 10);
       user.password = hashedPassword;
       await user.save();
@@ -57,6 +55,7 @@ app.post('/api/forgot-password', async (req, res) => {
       res.status(500).json({ error: error.message });
     }
   });
+  //TODO: Token must be added here
 app.post('/api/signup', async (req, res) => {
     const { email, password } = req.body;
     if (!email || !password) {
@@ -78,7 +77,7 @@ app.post('/api/signup', async (req, res) => {
       res.status(400).json({'message': `Error creating user: ${e}`});
     }
   });
-
+//Todo : User token must be stored and used in every attempt to log in atleast we got something such as security arround here
 app.post('/api/login', async (req, res) => {
     const { email, password } = req.body;
     if (typeof email !== 'string' || typeof password !== 'string') {
@@ -97,7 +96,7 @@ app.post('/api/login', async (req, res) => {
         res.status(200).json({
           'message': 'Login successful',
           'user': {
-            'role': user.role, // Send the user's role
+            'role': user.role,
             'email': user.email
           }
         });
