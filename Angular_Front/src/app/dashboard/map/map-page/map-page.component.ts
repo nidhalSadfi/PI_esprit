@@ -41,7 +41,7 @@ export class MapPageComponent implements AfterViewInit {
             color,
             fillColor: color,
             fillOpacity: 0.5,
-            radius: gas.concentration * 1000 // Adjust the multiplier as needed
+            radius: this.getRadius(gas.concentration)
           }).addTo(this.map)
             .bindPopup(`<b>${gas.gasType}</b><br>Concentration: ${gas.concentration}`);
           this.circles.push(circle);
@@ -76,5 +76,9 @@ export class MapPageComponent implements AfterViewInit {
     } else {
       return '#00ff00'; // Low concentration (Green)
     }
+  }
+
+  private getRadius(concentration: number): number {
+    return concentration * 500; // Adjust the multiplier to suit your needs and prevent overlapping
   }
 }

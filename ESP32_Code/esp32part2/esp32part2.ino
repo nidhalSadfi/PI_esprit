@@ -8,9 +8,10 @@
 #define BME_SDA 21
 #define BME_SCL 22
 
-const char* ssid = "Dont try";
-const char* password = "himaNIni123@NIDHAL@";
-const char* serverUrl = "http://192.168.1.14:5000/data";
+const char* ssid = "Dont try";  // Enter SSID here
+const char* password = "himaNIni123@NIDHAL@";  // Enter Password here
+
+const char* serverUrl = "http://192.168.1.14:5050/data";
 
 Adafruit_BME280 bme; // I2C
 
@@ -39,6 +40,16 @@ void loop() {
     float pressure = bme.readPressure() / 100.0F;
 
     String postData = "temperature=" + String(temperature) + "&humidity=" + String(humidity) + "&pressure=" + String(pressure);
+
+    // Debug prints
+    Serial.print("Temperature: ");
+    Serial.println(temperature);
+    Serial.print("Humidity: ");
+    Serial.println(humidity);
+    Serial.print("Pressure: ");
+    Serial.println(pressure);
+    Serial.print("Sending data: ");
+    Serial.println(postData);
 
     http.begin(serverUrl);
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");

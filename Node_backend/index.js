@@ -11,9 +11,9 @@ const UserSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },  // Changed from Buffer to String for simplicity
     role: { type: String, default: 'user' }
-  });
+});
 const User = mongoose.model('User', UserSchema);
-// Schema for storing gas data
+
 const gasSchema = new mongoose.Schema({
   gasType: String,
   concentration: Number,
@@ -21,14 +21,18 @@ const gasSchema = new mongoose.Schema({
     lat: Number,
     lng: Number,
   },
+  timestamp: Date
 });
 
 const Gas = mongoose.model('Gas', gasSchema);
 
-// Route to fetch gas data
 app.get('/api/gas-data', async (req, res) => {
   try {
-    const data = await Gas.find();
+    const data = await Gas.aggregate([
+      { $sort: { timestamp: -1 } },
+      { $group: { _id: "$gasType", latestData: { $first: "$$ROOT" } } },
+      { $replaceRoot: { newRoot: "$latestData" } }
+    ]);
     res.json(data);
   } catch (err) {
     res.status(500).send(err);
@@ -47,7 +51,6 @@ app.post('/api/forgot-password', async (req, res) => {
         return res.status(404).json({ message: 'User not found with this email' });
       }
   
-      // Update user's password
       const hashedPassword = await bcrypt.hash(newPassword, 10);
       user.password = hashedPassword;
       await user.save();
@@ -56,7 +59,7 @@ app.post('/api/forgot-password', async (req, res) => {
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
-  });
+});
 app.post('/api/signup', async (req, res) => {
     const { email, password } = req.body;
     if (!email || !password) {
@@ -77,7 +80,7 @@ app.post('/api/signup', async (req, res) => {
     } catch (e) {
       res.status(400).json({'message': `Error creating user: ${e}`});
     }
-  });
+});
 
 app.post('/api/login', async (req, res) => {
     const { email, password } = req.body;
@@ -97,7 +100,7 @@ app.post('/api/login', async (req, res) => {
         res.status(200).json({
           'message': 'Login successful',
           'user': {
-            'role': user.role, // Send the user's role
+            'role': user.role,
             'email': user.email
           }
         });
@@ -107,7 +110,7 @@ app.post('/api/login', async (req, res) => {
     } catch (e) {
       res.status(500).json({ 'error': e.message });
     }
-  });
+});
 
 const PORT = 5000;
 app.listen(PORT, () => {

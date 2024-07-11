@@ -5,6 +5,8 @@
       <tr>
         <th>Name of The Gas</th>
         <th>Concentration</th>
+        <th>Concentration Level</th>
+        <th>Value</th>
         <th>Go to Map</th>
       </tr>
     </thead>
@@ -12,6 +14,8 @@
       <tr *ngFor="let gas of gases">
         <td>{{ gas.gasType }}</td>
         <td>{{ gas.concentration }}</td>
+        <td>{{ gas.concentrationLevel }}</td>
+        <td>{{ gas.value }}</td>
         <td><button class="btn btn-primary" (click)="goToMap(gas)">Map location</button></td>
       </tr>
     </tbody>
